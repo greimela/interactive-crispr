@@ -1,9 +1,9 @@
 var values = [
   { value: 0, type: 'insert', onCircle: true, length: 10, x: 0, y: 0 },
   { value: 300, type: 'insert', onCircle: true, length: 10, x: 0, y: 0 },
-  { value: 50, type: 'left-border', onCircle: true, length: 5, x: 0, y: 0 },
+  { value: 50, type: 'right-border', onCircle: true, length: 5, x: 0, y: 0 },
   { value: 180, type: 'virulenzgen', onCircle: true, length: 10, x: 0, y: 0 },
-  { value: 250, type: 'right-border', onCircle: true, length: 5, x: 0, y: 0 },
+  { value: 250, type: 'left-border', onCircle: true, length: 5, x: 0, y: 0 },
 ];
 
 var height = 500,
@@ -45,13 +45,39 @@ var drag = d3.behavior
     d3.select(this).classed('active', false);
   });
 
+function drawTDnaRange() {
+  ring.select('path').remove();
+
+  const leftBorder = values.find(value => value.type === 'left-border');
+  const rightBorder = values.find(value => value.type === 'right-border');
+
+  if (leftBorder && rightBorder && leftBorder.onCircle && rightBorder.onCircle) {
+    console.log('leftBorder', leftBorder.value - 360);
+    console.log('rightBorder', rightBorder.value);
+    let degrees;
+    if (leftBorder.value > rightBorder.value) {
+      degrees = (rightBorder.value - (leftBorder.value - 360));
+    } else {
+      degrees = rightBorder.value - leftBorder.value;
+    }
+    const angle = degrees * Math.PI / 180;
+    const arc = d3.svg
+      .arc()
+      .innerRadius(radius - 20)
+      .outerRadius(radius - 15)
+      .startAngle(0)
+      .endAngle(angle);
+    ring.append('path').attr({ d: arc, transform: `rotate(${leftBorder.value + 90})` });
+  }
+}
+
 //position the handles based on the input values
 function drawHandles() {
   const arc = d3.svg
     .arc()
     .innerRadius(radius - 7.5)
     .outerRadius(radius + 7.5);
-   const join = handles.selectAll('path').data(values);
+  const join = handles.selectAll('path').data(values);
   join
     .enter()
     .append('path')
@@ -83,6 +109,7 @@ function drawHandles() {
   });
 }
 
+drawTDnaRange();
 drawHandles();
 
 function dragmove(d) {
@@ -105,6 +132,6 @@ function dragmove(d) {
     }
     d.value = newAngle;
   }
-  //REDRAW HANDLES
   drawHandles();
+  drawTDnaRange();
 }
