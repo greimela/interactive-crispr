@@ -1,15 +1,15 @@
 var values = [
-  { value: 0, label: 'A', onCircle: true, x: 0, y: 0 },
-  { value: 50, label: 'B', onCircle: true, x: 0, y: 0 },
-  { value: 250, label: 'C', onCircle: true, x: 0, y: 0 },
+  { value: 0, type: 'insert', onCircle: true, length: 10, x: 0, y: 0 },
+  { value: 300, type: 'insert', onCircle: true, length: 10, x: 0, y: 0 },
+  { value: 50, type: 'left-border', onCircle: true, length: 5, x: 0, y: 0 },
+  { value: 180, type: 'virulenzgen', onCircle: true, length: 10, x: 0, y: 0 },
+  { value: 250, type: 'right-border', onCircle: true, length: 5, x: 0, y: 0 },
 ];
-var dragging = null;
 
-console.log(values);
-var height = 800,
-  width = 600,
-  margin = { top: 20, left: 20, bottom: 20, right: 20 };
-var radius = 100;
+var height = 500,
+  width = 960,
+  margin = { top: 20, left: 20, bottom: 20, right: 20 },
+  radius = 200;
 
 var parent = d3
   .select('.parent')
@@ -20,8 +20,6 @@ var parent = d3
   })
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-// var angularScale = d3.scale.linear().range([0, 360]).domain([0, total]);
 
 var ring = parent
   .append('g')
@@ -51,17 +49,26 @@ var drag = d3.behavior
 function drawHandles() {
   var arc = d3.svg
     .arc()
-    .innerRadius(radius - 5)
-    .outerRadius(radius + 5)
+    .innerRadius(radius - 7.5)
+    .outerRadius(radius + 7.5)
     .startAngle(-0.1 * Math.PI)
     .endAngle(0.1 * Math.PI);
   var join = handles.selectAll('path').data(values);
   join
     .enter()
     .append('path')
-    .attr({
-      d: arc,
-      class: 'handle',
+    .attr('d', arc)  // TODO Dynamic arc based on length
+    /*
+    length = d.length * Math.PI / 180
+     d3.svg
+     .arc()
+     .innerRadius(radius - 7.5)
+     .outerRadius(radius + 7.5)
+     .startAngle(-length)
+     .endAngle(length)
+     */
+    .attr('class', function(d) {
+      return `handle ${d.type}`;
     })
     .on('mouseover', function() {
       d3.select(this).classed('active', true);
@@ -70,6 +77,8 @@ function drawHandles() {
       d3.select(this).classed('active', false);
     })
     .call(drag);
+
+  console.log(join);
 
   join.attr({
     transform: function(d) {

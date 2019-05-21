@@ -1,23 +1,36 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    width: 960px;
-    height: 500px;
-    position: relative;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  width: 960px;
+  height: 500px;
+  position: relative;
 }
 
 .parent {
-    border: 1px solid black;
+  border: 1px solid black;
+}
+
+.ring {
+  fill: none;
+  stroke: #383838;
+  stroke-width: 15;
 }
 
 .handle {
-    fill:#f00;
-    cursor: all-scroll;
+  cursor: all-scroll;
 }
 
-
-.ring {
-    fill:none;
-    stroke:#000;
-    stroke-width:10;
+.handle.insert {
+  fill: #b3291e;
 }
 
+.handle.left-border {
+  fill: #f09057;
+}
+
+.handle.right-border {
+  fill: #f09057;
+}
+
+.handle.virulenzgen {
+  fill: #406963;
+}
