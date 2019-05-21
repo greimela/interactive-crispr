@@ -47,28 +47,22 @@ var drag = d3.behavior
 
 //position the handles based on the input values
 function drawHandles() {
-  var arc = d3.svg
+  const arc = d3.svg
     .arc()
     .innerRadius(radius - 7.5)
-    .outerRadius(radius + 7.5)
-    .startAngle(-0.1 * Math.PI)
-    .endAngle(0.1 * Math.PI);
-  var join = handles.selectAll('path').data(values);
+    .outerRadius(radius + 7.5);
+   const join = handles.selectAll('path').data(values);
   join
     .enter()
     .append('path')
-    .attr('d', arc)  // TODO Dynamic arc based on length
-    /*
-    length = d.length * Math.PI / 180
-     d3.svg
-     .arc()
-     .innerRadius(radius - 7.5)
-     .outerRadius(radius + 7.5)
-     .startAngle(-length)
-     .endAngle(length)
-     */
-    .attr('class', function(d) {
-      return `handle ${d.type}`;
+    .attr({
+      d: function(d) {
+        const length = (d.length * Math.PI) / 180;
+        return arc({ startAngle: -length, endAngle: length });
+      },
+      class: function(d) {
+        return `handle ${d.type}`;
+      },
     })
     .on('mouseover', function() {
       d3.select(this).classed('active', true);
@@ -77,8 +71,6 @@ function drawHandles() {
       d3.select(this).classed('active', false);
     })
     .call(drag);
-
-  console.log(join);
 
   join.attr({
     transform: function(d) {
@@ -93,7 +85,7 @@ function drawHandles() {
 
 drawHandles();
 
-function dragmove(d, i) {
+function dragmove(d) {
   d3.select(this).classed('active', true);
   console.log(d);
   var coordinates = d3.mouse(parent.node());
