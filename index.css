@@ -9,6 +9,11 @@ body {
   position: relative;
 }
 
+input {
+  position: fixed;
+  left: 900px;
+}
+
 .ring {
   fill: none;
   stroke: #383838;
