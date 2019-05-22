@@ -12,6 +12,8 @@ var height = 500,
   radius = 200,
   componentBoxWidth = 200;
 
+var error;
+
 var ringLeft = width - 2 * radius - componentBoxWidth;
 var ringRight = ringLeft + 2 * radius;
 
@@ -200,4 +202,29 @@ function dragmove(d) {
   }
   drawHandles();
   drawTDnaRange();
+  clearMessage();
+}
+
+function clearMessage() {
+  parent.select('#message').remove();
+}
+
+function showMessage(type, message) {
+  clearMessage();
+  parent
+    .append('text')
+    .attr('id', 'message')
+    .text(message)
+    .attr('fill', type === 'error' ? 'red' : 'green')
+    .attr('transform', `translate(${ringLeft + radius}, ${radius})`)
+    .style('text-anchor', 'middle');
+}
+
+function validate() {
+  // Alle Elemente platziert?
+  if (values.filter(value => !value.onCircle).length > 0) {
+    showMessage('error', 'Es sind nicht alle Elemente platziert');
+    return;
+  }
+  showMessage('success', 'Alles korrekt!')
 }
