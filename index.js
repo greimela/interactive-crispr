@@ -1,9 +1,9 @@
 var values = [
-  { value: 0, type: 'insert', onCircle: true, length: 10, x: 0, y: 0 },
-  { value: 300, type: 'insert', onCircle: true, length: 10, x: 0, y: 0 },
-  { value: 50, type: 'right-border', onCircle: true, length: 5, x: 0, y: 0 },
-  { value: 180, type: 'virulenzgen', onCircle: true, length: 10, x: 0, y: 0 },
-  { value: 250, type: 'left-border', onCircle: true, length: 5, x: 0, y: 0 },
+  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 250 },
+  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 280 },
+  { value: 0, type: 'left-border', onCircle: false, length: 5, x: 50, y: 390 },
+  { value: 0, type: 'right-border', onCircle: false, length: 5, x: 150, y: 390 },
+  { value: 0, type: 'virulenzgen', onCircle: false, length: 10, x: 100, y: 480 },
 ];
 
 var height = 500,
@@ -26,14 +26,6 @@ var parent = d3
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 var components = parent.append('g').attr('id', 'components');
-components.append('rect').attr({
-  x: 0,
-  y: 0,
-  width: componentBoxWidth,
-  height: height - margin.top - margin.bottom,
-  fill: 'white',
-  stroke: 'black',
-});
 
 var ring = parent
   .append('g')
@@ -82,6 +74,69 @@ function drawTDnaRange() {
   }
 }
 
+function drawComponents() {
+  components.append('rect').attr({
+    x: 0,
+    y: 0,
+    width: componentBoxWidth,
+    height: height - margin.top - margin.bottom,
+    fill: 'white',
+    stroke: 'black',
+  });
+
+  components.append('rect').attr({
+    x: 10,
+    y: 10,
+    width: componentBoxWidth - 20,
+    height: 100,
+    fill: 'white',
+    stroke: 'black',
+  });
+  components
+    .append('text')
+    .text('Inserts')
+    .attr({ x: 100, y: 30, fill: 'black' })
+    .style('text-anchor', 'middle');
+
+  components.append('rect').attr({
+    x: 10,
+    y: 120,
+    width: componentBoxWidth - 20,
+    height: 100,
+    fill: 'white',
+    stroke: 'black',
+  });
+  components
+    .append('text')
+    .text('Grenzen')
+    .attr({ x: 100, y: 140, fill: 'black' })
+    .style('text-anchor', 'middle');
+  components
+    .append('text')
+    .text('Links')
+    .attr({ x: 50, y: 170, fill: 'black' })
+    .style('text-anchor', 'middle');
+  components
+    .append('text')
+    .text('Rechts')
+    .attr({ x: 150, y: 170, fill: 'black' })
+    .style('text-anchor', 'middle');
+
+  components.append('rect').attr({
+    x: 10,
+    y: 230,
+    width: componentBoxWidth - 20,
+    height: 100,
+    fill: 'white',
+    stroke: 'black',
+  });
+  components
+    .append('text')
+    .text('Virulenzgen')
+    .attr({ x: 100, y: 250, fill: 'black' })
+    .style('text-anchor', 'middle');
+}
+
 //position the handles based on the input values
 function drawHandles() {
   const arc = d3.svg
@@ -120,6 +175,7 @@ function drawHandles() {
   });
 }
 
+drawComponents();
 drawTDnaRange();
 drawHandles();
 
@@ -128,7 +184,7 @@ function dragmove(d) {
   var coordinates = d3.mouse(parent.node());
   d.x = coordinates[0];
   d.y = coordinates[1];
-  console.log(coordinates);
+  console.log(d);
   if (d.x > ringRight + 10 || d.y > 2 * radius + 10 || d.x < ringLeft - 10) {
     // outside of circle
     d.onCircle = false;
