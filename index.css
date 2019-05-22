@@ -9,10 +9,6 @@ body {
   position: relative;
 }
 
-.parent {
-  border: 1px solid black;
-}
-
 .ring {
   fill: none;
   stroke: #383838;

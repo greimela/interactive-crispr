@@ -9,7 +9,11 @@ var values = [
 var height = 500,
   width = 960,
   margin = { top: 20, left: 20, bottom: 20, right: 20 },
-  radius = 200;
+  radius = 200,
+  componentBoxWidth = 200;
+
+var ringLeft = width - 2 * radius - componentBoxWidth;
+var ringRight = ringLeft + 2 * radius;
 
 var parent = d3
   .select('.parent')
@@ -21,19 +25,26 @@ var parent = d3
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+var components = parent.append('g').attr('id', 'components');
+components.append('rect').attr({
+  x: 0,
+  y: 0,
+  width: componentBoxWidth,
+  height: height - margin.top - margin.bottom,
+  fill: 'white',
+  stroke: 'black',
+});
+
 var ring = parent
   .append('g')
-  .attr('id', 'rim')
-  .attr('transform', 'translate(' + radius + ',' + radius + ')');
+  .attr('id', 'ring')
+  .attr('transform', 'translate(' + (radius + ringLeft) + ',' + radius + ')');
 ring.append('circle').attr({
   r: radius,
   class: 'ring',
 });
 
-var handles = parent
-  .append('g')
-  .attr('id', 'handles')
-  .attr('transform', 'translate(' + radius + ',' + radius + ')');
+var handles = parent.append('g').attr('id', 'handles');
 
 var drag = d3.behavior
   .drag()
@@ -56,11 +67,11 @@ function drawTDnaRange() {
     console.log('rightBorder', rightBorder.value);
     let degrees;
     if (leftBorder.value > rightBorder.value) {
-      degrees = (rightBorder.value - (leftBorder.value - 360));
+      degrees = rightBorder.value - (leftBorder.value - 360);
     } else {
       degrees = rightBorder.value - leftBorder.value;
     }
-    const angle = degrees * Math.PI / 180;
+    const angle = (degrees * Math.PI) / 180;
     const arc = d3.svg
       .arc()
       .innerRadius(radius - 20)
@@ -101,7 +112,7 @@ function drawHandles() {
   join.attr({
     transform: function(d) {
       if (d.onCircle) {
-        return `rotate(${d.value + 90})`;
+        return `translate(${[ringLeft + radius, radius]}) rotate(${d.value + 90})`;
       } else {
         return 'translate(' + [d.x, d.y] + ')';
       }
@@ -114,19 +125,18 @@ drawHandles();
 
 function dragmove(d) {
   d3.select(this).classed('active', true);
-  console.log(d);
   var coordinates = d3.mouse(parent.node());
-  d.x = coordinates[0] - radius;
-  d.y = coordinates[1] - radius;
+  d.x = coordinates[0];
+  d.y = coordinates[1];
   console.log(coordinates);
-  if (d.x > radius + 10 || d.y > radius + 10) {
+  if (d.x > ringRight + 10 || d.y > 2 * radius + 10 || d.x < ringLeft - 10) {
     // outside of circle
     d.onCircle = false;
-    d.y = d.y + radius;
+    d.y = d.y + radius; // Center of arc is center of circle, so move ring segment to cursor position
   } else {
     // inside of circle
     d.onCircle = true;
-    var newAngle = Math.atan2(d.y, d.x) * 57.2957795;
+    var newAngle = Math.atan2(d.y - radius, d.x - ringLeft - radius) * 57.2957795;
     if (newAngle < 0) {
       newAngle = 360 + newAngle;
     }
