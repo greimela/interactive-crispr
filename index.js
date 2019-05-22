@@ -1,9 +1,9 @@
 var values = [
-  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 250 },
-  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 280 },
-  { value: 0, type: 'left-border', onCircle: false, length: 5, x: 50, y: 390 },
-  { value: 0, type: 'right-border', onCircle: false, length: 5, x: 150, y: 390 },
-  { value: 0, type: 'virulenzgen', onCircle: false, length: 10, x: 100, y: 480 },
+  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 250, isEditable: true, content: '' },
+  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 280, isEditable: true, content: '' },
+  { value: 0, type: 'left-border', onCircle: false, length: 5, x: 50, y: 390, isEditable: false },
+  { value: 0, type: 'right-border', onCircle: false, length: 5, x: 150, y: 390, isEditable: false },
+  { value: 0, type: 'virulenzgen', onCircle: false, length: 10, x: 100, y: 480, isEditable: true, content: '' },
 ];
 
 var height = 500,
@@ -17,8 +17,10 @@ var error;
 var ringLeft = width - 2 * radius - componentBoxWidth;
 var ringRight = ringLeft + 2 * radius;
 
-var parent = d3
-  .select('.parent')
+let currentlyEditedHandle;
+
+const parent = d3
+  .select('.svg-container')
   .append('svg')
   .attr({
     height: height,
@@ -27,9 +29,9 @@ var parent = d3
   .append('g')
   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-var components = parent.append('g').attr('id', 'components');
+const components = parent.append('g').attr('id', 'components');
 
-var ring = parent
+const ring = parent
   .append('g')
   .attr('id', 'ring')
   .attr('transform', 'translate(' + (radius + ringLeft) + ',' + radius + ')');
@@ -38,9 +40,9 @@ ring.append('circle').attr({
   class: 'ring',
 });
 
-var handles = parent.append('g').attr('id', 'handles');
+const handles = parent.append('g').attr('id', 'handles');
 
-var drag = d3.behavior
+const drag = d3.behavior
   .drag()
   .origin(function(d) {
     return d;
@@ -157,12 +159,24 @@ function drawHandles() {
       class: function(d) {
         return `handle ${d.type}`;
       },
+      'data-toggle': 'tooltip',
+      'data-placement': 'bottom',
+      title: function(d) {
+        return d.content;
+      },
     })
     .on('mouseover', function() {
       d3.select(this).classed('active', true);
     })
     .on('mouseout', function() {
       d3.select(this).classed('active', false);
+    })
+    .on('dblclick', function(d) {
+      if (d.isEditable) {
+        $('#inputModal').modal();
+        $('#sequenceInput').val(d.content);
+        currentlyEditedHandle = d;
+      }
     })
     .call(drag);
 
@@ -175,7 +189,22 @@ function drawHandles() {
       }
     },
   });
+
+  $(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 }
+
+$('#inputForm').submit(function(event) {
+  event.preventDefault();
+  console.log(currentlyEditedHandle);
+  currentlyEditedHandle.content = $('#sequenceInput')
+    .val()
+    .trim();
+  $('#inputModal').modal('hide');
+  handles.selectAll('path').remove();
+  drawHandles();
+});
 
 drawComponents();
 drawTDnaRange();
@@ -226,5 +255,5 @@ function validate() {
     showMessage('error', 'Es sind nicht alle Elemente platziert');
     return;
   }
-  showMessage('success', 'Alles korrekt!')
+  showMessage('success', 'Alles korrekt!');
 }
