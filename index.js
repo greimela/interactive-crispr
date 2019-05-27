@@ -53,6 +53,7 @@ const drag = d3.behavior
 
 function drawTDnaRange() {
   ring.select('path').remove();
+  ring.select('text').remove();
 
   const leftBorder = values.find(value => value.type === 'left-border');
   const rightBorder = values.find(value => value.type === 'right-border');
@@ -74,6 +75,13 @@ function drawTDnaRange() {
       .startAngle(0)
       .endAngle(angle);
     ring.append('path').attr({ d: arc, transform: `rotate(${leftBorder.value + 90})` });
+
+    ring
+      .append('text')
+      .text('t-DNA-Bereich')
+      .attr({y: -150, fill: 'black', class: 'noselect' })
+      .style('text-anchor', 'middle')
+      .attr({ transform: `rotate(${leftBorder.value + degrees / 2 + 90})` });
   }
 }
 
