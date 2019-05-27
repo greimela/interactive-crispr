@@ -59,8 +59,6 @@ function drawTDnaRange() {
   const rightBorder = values.find(value => value.type === 'right-border');
 
   if (leftBorder && rightBorder && leftBorder.onCircle && rightBorder.onCircle) {
-    console.log('leftBorder', leftBorder.value - 360);
-    console.log('rightBorder', rightBorder.value);
     let degrees;
     if (leftBorder.value > rightBorder.value) {
       degrees = rightBorder.value - (leftBorder.value - 360);
@@ -204,7 +202,6 @@ function drawHandles() {
 
 $('#inputForm').submit(function(event) {
   event.preventDefault();
-  console.log(currentlyEditedHandle);
   currentlyEditedHandle.content = $('#sequenceInput')
     .val()
     .trim();
@@ -222,7 +219,6 @@ function dragmove(d) {
   var coordinates = d3.mouse(parent.node());
   d.x = coordinates[0];
   d.y = coordinates[1];
-  console.log(d);
   if (d.x > ringRight + 10 || d.y > 2 * radius + 10 || d.x < ringLeft - 10) {
     // outside of circle
     d.onCircle = false;
