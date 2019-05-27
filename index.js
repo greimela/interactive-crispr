@@ -1,9 +1,8 @@
 var values = [
-  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 250, isEditable: true, content: '' },
-  { value: 0, type: 'insert', onCircle: false, length: 10, x: 100, y: 280, isEditable: true, content: '' },
-  { value: 0, type: 'left-border', onCircle: false, length: 5, x: 50, y: 390, isEditable: false },
-  { value: 0, type: 'right-border', onCircle: false, length: 5, x: 150, y: 390, isEditable: false },
-  { value: 0, type: 'virulenzgen', onCircle: false, length: 10, x: 100, y: 480, isEditable: true, content: '' },
+  { value: 0, type: 'insert', onCircle: false, length: 20, x: 100, y: 260, isEditable: true, content: '' },
+  { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: 390, isEditable: false },
+  { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: 390, isEditable: false },
+  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: 480, isEditable: true, content: '' },
 ];
 
 var height = 500,
@@ -98,7 +97,7 @@ function drawComponents() {
   });
   components
     .append('text')
-    .text('Inserts')
+    .text('Insert')
     .attr({ x: 100, y: 30, fill: 'black' })
     .style('text-anchor', 'middle');
 
@@ -153,7 +152,7 @@ function drawHandles() {
     .append('path')
     .attr({
       d: function(d) {
-        const length = (d.length * Math.PI) / 180;
+        const length = ((d.length / 2) * Math.PI) / 180;
         return arc({ startAngle: -length, endAngle: length });
       },
       class: function(d) {
