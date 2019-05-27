@@ -98,7 +98,7 @@ function drawComponents() {
   components
     .append('text')
     .text('Insert')
-    .attr({ x: 100, y: 30, fill: 'black' })
+    .attr({ x: 100, y: 30, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
 
   components.append('rect').attr({
@@ -112,17 +112,17 @@ function drawComponents() {
   components
     .append('text')
     .text('Grenzen')
-    .attr({ x: 100, y: 140, fill: 'black' })
+    .attr({ x: 100, y: 140, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
   components
     .append('text')
     .text('Links')
-    .attr({ x: 50, y: 170, fill: 'black' })
+    .attr({ x: 50, y: 170, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
   components
     .append('text')
     .text('Rechts')
-    .attr({ x: 150, y: 170, fill: 'black' })
+    .attr({ x: 150, y: 170, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
 
   components.append('rect').attr({
@@ -136,7 +136,7 @@ function drawComponents() {
   components
     .append('text')
     .text('Virulenzgen')
-    .attr({ x: 100, y: 250, fill: 'black' })
+    .attr({ x: 100, y: 250, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
 }
 
