@@ -251,8 +251,60 @@ function showMessage(type, message) {
 function validate() {
   // Alle Elemente platziert?
   if (values.filter(value => !value.onCircle).length > 0) {
-    showMessage('error', 'Es sind nicht alle Elemente platziert');
+    showMessage('error', 'Das Plasmid ist nicht vollständig!');
     return;
   }
+  // Abschnitte überlappen
+  for (const first of values) {
+    for (const second of values) {
+      if (first === second) {
+        continue;
+      }
+      const firstAngle = 0;
+      const secondAngle = (second.value - first.value + 360) % 360;
+      if (
+        firstAngle + first.length / 2 > secondAngle - second.length / 2 &&
+        firstAngle + first.length / 2 < secondAngle + second.length / 2
+      ) {
+        showMessage('error', 'Abschnitte überlappen sich!');
+        return;
+      }
+    }
+  }
+
+  // Insert nicht im t-DNA-Bereich
+  const leftBorder = values.find(value => value.type === 'left-border');
+  const insert = values.find(value => value.type === 'insert');
+  const virulenzgen = values.find(value => value.type === 'virulenzgen');
+  const rightBorder = values.find(value => value.type === 'right-border');
+
+  const leftBorderAngle = 0;
+  const insertAngle = (insert.value - leftBorder.value + 360) % 360;
+  const virulenzgenAngle = (virulenzgen.value - leftBorder.value + 360) % 360;
+  const rightBorderAngle = (rightBorder.value - leftBorder.value + 360) % 360;
+
+  if (insertAngle - insert.length / 2 > rightBorderAngle + rightBorder.length / 2) {
+    showMessage('error', 'Insert befindet sich nicht im t-DNA-Bereich!');
+    return;
+  }
+
+  // Virulenzgen im t-DNA-Bereich
+  if (virulenzgenAngle - virulenzgen.length / 2 < rightBorderAngle + rightBorder.length / 2) {
+    showMessage('error', 'Virulenzgen befindet sich im t-DNA-Bereich!');
+    return;
+  }
+
+  // Eingegebene Sequenz enthält nicht nur ATCG
+  if (!insert.content.match(/^[atcgATCG-]*$/)) {
+    showMessage('error', 'Sequenz enthält andere Buchstaben als ATCG.');
+    return;
+  }
+
+  // t-DNA-Bereich ist größer als 90 Grad
+  if (rightBorderAngle > 90) {
+    showMessage('error', 't-DNA-Bereich ist größer als 90 Grad!');
+    return;
+  }
+
   showMessage('success', 'Alles korrekt!');
 }
