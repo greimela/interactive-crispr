@@ -1,8 +1,8 @@
 var values = [
-  { value: 0, type: 'insert', onCircle: false, length: 20, x: 100, y: 260, isEditable: true, content: '' },
+  { value: 0, type: 'insert', onCircle: false, length: 20, x: 100, y: 260, isEditable: true, spacer1: '', spacer2: '' },
   { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: 390, isEditable: false },
   { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: 390, isEditable: false },
-  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: 480, isEditable: true, content: '' },
+  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: 480, isEditable: true },
 ];
 
 var height = 500,
@@ -77,7 +77,7 @@ function drawTDnaRange() {
     ring
       .append('text')
       .text('t-DNA-Bereich')
-      .attr({y: -150, fill: 'black', class: 'noselect' })
+      .attr({ y: -150, fill: 'black', class: 'noselect' })
       .style('text-anchor', 'middle')
       .attr({ transform: `rotate(${leftBorder.value + degrees / 2 + 90})` });
   }
@@ -166,8 +166,11 @@ function drawHandles() {
       },
       'data-toggle': 'tooltip',
       'data-placement': 'bottom',
+      'data-html': 'true',
       title: function(d) {
-        return d.content;
+        if (d.spacer1 || d.spacer2) {
+          return `Spacer 1: ${d.spacer1}<br\>Spacer 2: ${d.spacer2}`;
+        }
       },
     })
     .on('mouseover', function() {
@@ -179,7 +182,8 @@ function drawHandles() {
     .on('dblclick', function(d) {
       if (d.isEditable) {
         $('#inputModal').modal();
-        $('#sequenceInput').val(d.content);
+        $('#sequence1Input').val(d.spacer1);
+        $('#sequence2Input').val(d.spacer2);
         currentlyEditedHandle = d;
       }
     })
@@ -202,7 +206,10 @@ function drawHandles() {
 
 $('#inputForm').submit(function(event) {
   event.preventDefault();
-  currentlyEditedHandle.content = $('#sequenceInput')
+  currentlyEditedHandle.spacer1 = $('#sequence1Input')
+    .val()
+    .trim();
+  currentlyEditedHandle.spacer2 = $('#sequence2Input')
     .val()
     .trim();
   $('#inputModal').modal('hide');
@@ -298,9 +305,15 @@ function validate() {
     return;
   }
 
+  // Eingegebene Sequenz sind leer
+  if (!insert.spacer1 || !insert.spacer2) {
+    showMessage('error', 'Im Insert wurden keine zwei Spacer eingetragen!');
+    return;
+  }
+
   // Eingegebene Sequenz enthält nicht nur ATCG
-  if (!insert.content.match(/^[atcgATCG-]*$/)) {
-    showMessage('error', 'Sequenz enthält andere Buchstaben als ATCG.');
+  if (!insert.spacer1.match(/^[atcgATCG-]*$/) && !insert.spacer2.match(/^[atcgATCG-]*$/)) {
+    showMessage('error', 'Spacer enthalten andere Buchstaben als ATCG!');
     return;
   }
 
