@@ -164,28 +164,12 @@ function drawHandles() {
       class: function(d) {
         return `handle ${d.type}`;
       },
-      'data-toggle': 'tooltip',
-      'data-placement': 'bottom',
-      'data-html': 'true',
-      title: function(d) {
-        if (d.spacer1 || d.spacer2) {
-          return `Spacer 1: ${d.spacer1}<br\>Spacer 2: ${d.spacer2}`;
-        }
-      },
     })
     .on('mouseover', function() {
       d3.select(this).classed('active', true);
     })
     .on('mouseout', function() {
       d3.select(this).classed('active', false);
-    })
-    .on('dblclick', function(d) {
-      if (d.isEditable) {
-        $('#inputModal').modal();
-        $('#sequence1Input').val(d.spacer1);
-        $('#sequence2Input').val(d.spacer2);
-        currentlyEditedHandle = d;
-      }
     })
     .call(drag);
 
@@ -198,24 +182,7 @@ function drawHandles() {
       }
     },
   });
-
-  $(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
 }
-
-$('#inputForm').submit(function(event) {
-  event.preventDefault();
-  currentlyEditedHandle.spacer1 = $('#sequence1Input')
-    .val()
-    .trim();
-  currentlyEditedHandle.spacer2 = $('#sequence2Input')
-    .val()
-    .trim();
-  $('#inputModal').modal('hide');
-  handles.selectAll('path').remove();
-  drawHandles();
-});
 
 drawComponents();
 drawTDnaRange();
