@@ -1,8 +1,20 @@
+const firstBlock = 10;
+const firstBlockHeight = 220;
+const secondBlock = firstBlock + firstBlockHeight + 10;
+const secondBlockHeight = 100;
+const thirdBlock = secondBlock + secondBlockHeight + 10;
+
+const componentTop = 200;
 var values = [
-  { value: 0, type: 'insert', onCircle: false, length: 20, x: 100, y: 260, isEditable: true, spacer1: '', spacer2: '' },
-  { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: 390, isEditable: false },
-  { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: 390, isEditable: false },
-  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: 480, isEditable: true },
+  { value: 0, type: 'spacer1', onCircle: false, length: 15, x: 50, y: componentTop + firstBlock + 50 },
+  { value: 0, type: 'spacer2', onCircle: false, length: 15, x: 150, y: componentTop + firstBlock + 50 },
+  { value: 0, type: 'repeat', onCircle: false, length: 10, x: 50, y: componentTop + firstBlock + 50 + 70 },
+  { value: 0, type: 'repeat', onCircle: false, length: 10, x: 100, y: componentTop + firstBlock + 50 + 70 },
+  { value: 0, type: 'repeat', onCircle: false, length: 10, x: 150, y: componentTop + firstBlock + 50 + 70 },
+  { value: 0, type: 'cas-gen', onCircle: false, length: 15, x: 100, y: componentTop + firstBlock + 50 + 70 + 70 },
+  { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: componentTop + secondBlock + 70 },
+  { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: componentTop + secondBlock + 70 },
+  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: componentTop + thirdBlock + 70 },
 ];
 
 var height = 500,
@@ -15,8 +27,6 @@ var error;
 
 var ringLeft = width - 2 * radius - componentBoxWidth;
 var ringRight = ringLeft + 2 * radius;
-
-let currentlyEditedHandle;
 
 const parent = d3
   .select('.svg-container')
@@ -95,45 +105,57 @@ function drawComponents() {
 
   components.append('rect').attr({
     x: 10,
-    y: 10,
+    y: firstBlock,
     width: componentBoxWidth - 20,
-    height: 100,
+    height: firstBlockHeight,
     fill: 'white',
     stroke: 'black',
   });
   components
     .append('text')
-    .text('Insert')
-    .attr({ x: 100, y: 30, fill: 'black', class: 'noselect' })
+    .text('Spacer')
+    .attr({ x: 100, y: firstBlock + 20, fill: 'black', class: 'noselect' })
+    .style('text-anchor', 'middle');
+
+  components
+    .append('text')
+    .text('Repeat')
+    .attr({ x: 100, y: firstBlock + 90, fill: 'black', class: 'noselect' })
+    .style('text-anchor', 'middle');
+
+  components
+    .append('text')
+    .text('Cas-Gen')
+    .attr({ x: 100, y: firstBlock + 160, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
 
   components.append('rect').attr({
     x: 10,
-    y: 120,
+    y: secondBlock,
     width: componentBoxWidth - 20,
-    height: 100,
+    height: secondBlockHeight,
     fill: 'white',
     stroke: 'black',
   });
   components
     .append('text')
     .text('Grenzen')
-    .attr({ x: 100, y: 140, fill: 'black', class: 'noselect' })
+    .attr({ x: 100, y: secondBlock + 20, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
   components
     .append('text')
     .text('Links')
-    .attr({ x: 50, y: 170, fill: 'black', class: 'noselect' })
+    .attr({ x: 50, y: secondBlock + 50, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
   components
     .append('text')
     .text('Rechts')
-    .attr({ x: 150, y: 170, fill: 'black', class: 'noselect' })
+    .attr({ x: 150, y: secondBlock + 50, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
 
   components.append('rect').attr({
     x: 10,
-    y: 230,
+    y: thirdBlock,
     width: componentBoxWidth - 20,
     height: 100,
     fill: 'white',
@@ -141,8 +163,8 @@ function drawComponents() {
   });
   components
     .append('text')
-    .text('Virulenzgen')
-    .attr({ x: 100, y: 250, fill: 'black', class: 'noselect' })
+    .text('Virulenzgene')
+    .attr({ x: 100, y: thirdBlock + 20, fill: 'black', class: 'noselect' })
     .style('text-anchor', 'middle');
 }
 

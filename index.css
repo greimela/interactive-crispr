@@ -16,8 +16,20 @@ body {
   cursor: all-scroll;
 }
 
-.handle.insert {
+.handle.spacer1 {
   fill: #b3291e;
+}
+
+.handle.spacer2 {
+  fill: #55b300;
+}
+
+.handle.repeat {
+  fill: #9797a0;
+}
+
+.handle.cas-gen {
+  fill: #1a66b3;
 }
 
 .handle.left-border {
