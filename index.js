@@ -8,9 +8,9 @@ const componentTop = 200;
 var values = [
   { value: 0, type: 'spacer1', onCircle: false, length: 15, x: 50, y: componentTop + firstBlock + 50 },
   { value: 0, type: 'spacer2', onCircle: false, length: 15, x: 150, y: componentTop + firstBlock + 50 },
-  { value: 0, type: 'repeat', onCircle: false, length: 10, x: 50, y: componentTop + firstBlock + 50 + 70 },
-  { value: 0, type: 'repeat', onCircle: false, length: 10, x: 100, y: componentTop + firstBlock + 50 + 70 },
-  { value: 0, type: 'repeat', onCircle: false, length: 10, x: 150, y: componentTop + firstBlock + 50 + 70 },
+  { value: 0, type: 'repeat', onCircle: false, length: 5, x: 50, y: componentTop + firstBlock + 50 + 70 },
+  { value: 0, type: 'repeat', onCircle: false, length: 5, x: 100, y: componentTop + firstBlock + 50 + 70 },
+  { value: 0, type: 'repeat', onCircle: false, length: 5, x: 150, y: componentTop + firstBlock + 50 + 70 },
   { value: 0, type: 'cas-gen', onCircle: false, length: 15, x: 100, y: componentTop + firstBlock + 50 + 70 + 70 },
   { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: componentTop + secondBlock + 70 },
   { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: componentTop + secondBlock + 70 },
@@ -274,35 +274,29 @@ function validate() {
 
   // Insert nicht im t-DNA-Bereich
   const leftBorder = values.find(value => value.type === 'left-border');
-  const insert = values.find(value => value.type === 'insert');
+  const spacer1 = values.find(value => value.type === 'spacer1');
+  const spacer2 = values.find(value => value.type === 'spacer2');
   const virulenzgen = values.find(value => value.type === 'virulenzgen');
   const rightBorder = values.find(value => value.type === 'right-border');
 
-  const leftBorderAngle = 0;
-  const insertAngle = (insert.value - leftBorder.value + 360) % 360;
+  const spacer1Angle = (spacer1.value - leftBorder.value + 360) % 360;
+  const spacer2Angle = (spacer2.value - leftBorder.value + 360) % 360;
   const virulenzgenAngle = (virulenzgen.value - leftBorder.value + 360) % 360;
   const rightBorderAngle = (rightBorder.value - leftBorder.value + 360) % 360;
 
-  if (insertAngle - insert.length / 2 > rightBorderAngle + rightBorder.length / 2) {
-    showMessage('error', 'Insert befindet sich nicht im t-DNA-Bereich!');
+  if (spacer1Angle - spacer1.length / 2 > rightBorderAngle + rightBorder.length / 2) {
+    showMessage('error', 'Spacer 1 befindet sich nicht im t-DNA-Bereich!');
+    return;
+  }
+
+  if (spacer2Angle - spacer2.length / 2 > rightBorderAngle + rightBorder.length / 2) {
+    showMessage('error', 'Spacer 1 befindet sich nicht im t-DNA-Bereich!');
     return;
   }
 
   // Virulenzgen im t-DNA-Bereich
   if (virulenzgenAngle - virulenzgen.length / 2 < rightBorderAngle + rightBorder.length / 2) {
     showMessage('error', 'Virulenzgen befindet sich im t-DNA-Bereich!');
-    return;
-  }
-
-  // Eingegebene Sequenz sind leer
-  if (!insert.spacer1 || !insert.spacer2) {
-    showMessage('error', 'Im Insert wurden keine zwei Spacer eingetragen!');
-    return;
-  }
-
-  // Eingegebene Sequenz enthält nicht nur ATCG
-  if (!insert.spacer1.match(/^[atcgATCG-]*$/) && !insert.spacer2.match(/^[atcgATCG-]*$/)) {
-    showMessage('error', 'Spacer enthalten andere Buchstaben als ATCG!');
     return;
   }
 
