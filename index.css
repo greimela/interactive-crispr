@@ -6,6 +6,10 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.svg-container {
+  margin-bottom: 10px;
+}
+
 .ring {
   fill: none;
   stroke: #383838;
