@@ -210,6 +210,10 @@ drawComponents();
 drawTDnaRange();
 drawHandles();
 
+function isDockable(d) {
+  return d.type === 'repeat' || d.type.startsWith('spacer');
+}
+
 function dragmove(d) {
   d3.select(this).classed('active', true);
   var coordinates = d3.mouse(parent.node());
@@ -227,6 +231,24 @@ function dragmove(d) {
       newAngle = 360 + newAngle;
     }
     d.value = newAngle;
+
+    if (isDockable(d)) {
+      const otherDockables = values
+        .filter(value => value.onCircle)
+        .filter(isDockable)
+        .filter(value => value.type !== d.type);
+
+      otherDockables.forEach(elem => {
+        // Wenn meine linke Seite nahe an elems rechter Seite
+        if (Math.abs((d.value - d.length / 2) - (elem.value + elem.length / 2)) < 3) {
+          d.value = elem.value + elem.length/2 + d.length/2;
+        }
+        // Wenn meine rechte Seite nahe an elems linker Seite
+        if (Math.abs((d.value + d.length / 2) - (elem.value - elem.length / 2)) < 3) {
+          d.value = elem.value - elem.length/2 - d.length/2;
+        }
+      });
+    }
   }
   drawHandles();
   drawTDnaRange();
