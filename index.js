@@ -14,7 +14,7 @@ var values = [
   { value: 0, type: 'cas-gen', onCircle: false, length: 15, x: 100, y: componentTop + firstBlock + 50 + 70 + 70 },
   { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: componentTop + secondBlock + 70 },
   { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: componentTop + secondBlock + 70 },
-  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: componentTop + thirdBlock + 70 },
+  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: componentTop + thirdBlock + 50 },
 ];
 
 var height = 500,
