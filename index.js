@@ -300,8 +300,8 @@ function validate() {
     return;
   }
 
-  // t-DNA-Bereich ist größer als 90 Grad
-  if (rightBorderAngle > 90) {
+  // t-DNA-Bereich ist größer als 180 Grad
+  if (rightBorderAngle > 180) {
     showMessage('error', 't-DNA-Bereich ist größer als 90 Grad!');
     return;
   }
