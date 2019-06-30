@@ -16,13 +16,16 @@
     <div class="container d-none d-md-block">
       <h1 class="display-4">Ti-Plasmid interaktiv</h1>
       <div class="svg-container shadow-sm"></div>
-      <input
-        class="btn btn-secondary float-right"
-        name="updateButton"
-        type="button"
-        value="Prüfen"
-        onclick="validate()"
-      />
+      <div class="btn-group float-right">
+        <input class="btn btn-secondary" name="resetButton" type="button" value="Reset" onclick="reset()" />
+        <input
+          class="btn btn-primary float-right"
+          name="updateButton"
+          type="button"
+          value="Prüfen"
+          onclick="validate()"
+        />
+      </div>
     </div>
     <div class="container d-block d-md-none">
       <h3 class="">Dieser Bildschirm ist leider zu klein</h3>

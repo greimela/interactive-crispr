@@ -5,17 +5,7 @@ const secondBlockHeight = 100;
 const thirdBlock = secondBlock + secondBlockHeight + 10;
 
 const componentTop = 200;
-var values = [
-  { value: 0, type: 'spacer1', onCircle: false, length: 15, x: 50, y: componentTop + firstBlock + 50 },
-  { value: 0, type: 'spacer2', onCircle: false, length: 15, x: 150, y: componentTop + firstBlock + 50 },
-  { value: 0, type: 'repeat', onCircle: false, length: 5, x: 50, y: componentTop + firstBlock + 50 + 70 },
-  { value: 0, type: 'repeat', onCircle: false, length: 5, x: 100, y: componentTop + firstBlock + 50 + 70 },
-  { value: 0, type: 'repeat', onCircle: false, length: 5, x: 150, y: componentTop + firstBlock + 50 + 70 },
-  { value: 0, type: 'cas-gen', onCircle: false, length: 15, x: 100, y: componentTop + firstBlock + 50 + 70 + 70 },
-  { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: componentTop + secondBlock + 70 },
-  { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: componentTop + secondBlock + 70 },
-  { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: componentTop + thirdBlock + 50 },
-];
+let values = [];
 
 var height = 500,
   width = 768,
@@ -206,10 +196,6 @@ function drawHandles() {
   });
 }
 
-drawComponents();
-drawTDnaRange();
-drawHandles();
-
 function isDockable(d) {
   return d.type === 'repeat' || d.type.startsWith('spacer');
 }
@@ -330,3 +316,23 @@ function validate() {
 
   showMessage('success', 'Alles korrekt!');
 }
+
+function reset() {
+  values = [
+    { value: 0, type: 'spacer1', onCircle: false, length: 15, x: 50, y: componentTop + firstBlock + 50 },
+    { value: 0, type: 'spacer2', onCircle: false, length: 15, x: 150, y: componentTop + firstBlock + 50 },
+    { value: 0, type: 'repeat', onCircle: false, length: 5, x: 50, y: componentTop + firstBlock + 50 + 70 },
+    { value: 0, type: 'repeat', onCircle: false, length: 5, x: 100, y: componentTop + firstBlock + 50 + 70 },
+    { value: 0, type: 'repeat', onCircle: false, length: 5, x: 150, y: componentTop + firstBlock + 50 + 70 },
+    { value: 0, type: 'cas-gen', onCircle: false, length: 15, x: 100, y: componentTop + firstBlock + 50 + 70 + 70 },
+    { value: 0, type: 'left-border', onCircle: false, length: 10, x: 50, y: componentTop + secondBlock + 70 },
+    { value: 0, type: 'right-border', onCircle: false, length: 10, x: 150, y: componentTop + secondBlock + 70 },
+    { value: 0, type: 'virulenzgen', onCircle: false, length: 20, x: 100, y: componentTop + thirdBlock + 50 },
+  ];
+
+  drawComponents();
+  drawTDnaRange();
+  drawHandles();
+}
+
+reset();
