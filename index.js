@@ -298,7 +298,7 @@ function validate() {
   }
 
   if (spacer2Angle - spacer2.length / 2 > rightBorderAngle + rightBorder.length / 2) {
-    showMessage('error', 'Spacer 1 befindet sich nicht im t-DNA-Bereich!');
+    showMessage('error', 'Spacer 2 befindet sich nicht im t-DNA-Bereich!');
     return;
   }
 
