@@ -18,14 +18,14 @@ var values = [
 ];
 
 var height = 500,
-  width = 960,
+  width = 768,
   margin = { top: 20, left: 20, bottom: 20, right: 20 },
   radius = 200,
   componentBoxWidth = 200;
 
 var error;
 
-var ringLeft = width - 2 * radius - componentBoxWidth;
+var ringLeft = width - componentBoxWidth - (radius) - radius/2;
 var ringRight = ringLeft + 2 * radius;
 
 const parent = d3
@@ -240,12 +240,12 @@ function dragmove(d) {
 
       otherDockables.forEach(elem => {
         // Wenn meine linke Seite nahe an elems rechter Seite
-        if (Math.abs((d.value - d.length / 2) - (elem.value + elem.length / 2)) < 3) {
-          d.value = elem.value + elem.length/2 + d.length/2;
+        if (Math.abs(d.value - d.length / 2 - (elem.value + elem.length / 2)) < 3) {
+          d.value = elem.value + elem.length / 2 + d.length / 2;
         }
         // Wenn meine rechte Seite nahe an elems linker Seite
-        if (Math.abs((d.value + d.length / 2) - (elem.value - elem.length / 2)) < 3) {
-          d.value = elem.value - elem.length/2 - d.length/2;
+        if (Math.abs(d.value + d.length / 2 - (elem.value - elem.length / 2)) < 3) {
+          d.value = elem.value - elem.length / 2 - d.length / 2;
         }
       });
     }
